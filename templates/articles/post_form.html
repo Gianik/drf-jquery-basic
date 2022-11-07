@@ -1,0 +1,58 @@
+{% extends "partials/base.html"%}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" novalidate id='post_article'>
+            {% csrf_token %}
+            <fieldset class="form-group"> 
+                <legend class="border-bottom mb-4">Article Post</legend>
+            </fieldset>
+            <label for="atitle">Title:</label>
+            <input type="text" id="atitle" name="atitle"><br><br>
+            <label for="aemail">Email:</label>
+            <input type="text" id="aemail" name="aemail"><br><br>
+            <label for="aauthor">Author:</label>
+            <input type="text" id="aauthor" name="aauthor"><br><br>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Post</button>
+            </div>
+
+
+        </form>
+        <p id='test_message'></p>
+    </div>
+
+{% endblock content %}
+{% block javascript %}
+<script>
+$(document).ready(function () {
+    $("#post_article").submit(function(event){
+        event.preventDefault();
+        $.ajax({
+            url:"http://127.0.0.1:8000/articles/",
+            type:"POST",
+            dataType:"JSON",
+            data:{
+                title:$('#atitle').val(),
+                email:$('#aemail').val(),
+                author:$('#aauthor').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success:()=>{
+                window.location.replace("http://127.0.0.1:8000/")
+            },
+            error:(error)=>{
+                console.log(error)
+            },
+        });
+        return false;
+    });
+
+
+
+
+});
+
+</script>
+
+
+{% endblock %}
