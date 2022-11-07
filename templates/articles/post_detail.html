@@ -1,0 +1,46 @@
+{% extends "partials/base.html"%}
+{% block content %}
+        
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+            <a class="mr-2" href="#">{{ object.author }}</a>
+            <small class="text-muted">{{ object.date_created }}</small>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post_update' pk %}">Update</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post_delete' pk %}">Delete</a>
+            </div>
+            <h2 class="article-title">{{ object.title }}</h2>
+            <small class="text-muted">{{ object.date_created }}</small>
+            <p class="article-content">{{ object.content }}</p>
+            <div class="article-metadata" id="div2">
+            </div>
+
+        </div>
+    </article>
+
+{% endblock content %}
+{% block javascript %}
+<script>
+$(document).ready(function() {
+    var pk = {{pk}}
+    $.ajax({
+        type:"GET",
+        url:'http://127.0.0.1:8000/details/'+pk,
+        success:(data)=>{
+            var html="<p>" + data.id + "</p> <p>" + data.title +"</p> <p>" + data.author + "</p> <p>" + data.email + "</p>"
+
+            $('#div2').append(html)
+        },
+        error:(error)=>{
+            console.log(error)
+        }
+    })
+
+
+
+
+});
+
+</script>
+      
+{% endblock %}
